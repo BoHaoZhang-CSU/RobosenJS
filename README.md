@@ -5,25 +5,33 @@
 #### Getting Started
 
 - Install [Node.js](https://nodejs.org/en/download)
-- Install Project: `npm install`
-- Run Project: `npm start`
-- Run Tests: `npm test`
+- Check project:
+  - Checkout: `git clone https://github.com/oklemenz/RobosenJS.git`
+  - Checkout: `npm install`
+  - Test: `npm test`
+  - Run: `npm start`
+- Test package:
+  - Install module globally: `npm install -g robosen-js`
+  - See sections below
+- Use package:
+  - Install module: `npm install robosen-js`
+  - See programming section below
 
-#### CLI
+#### CLI (repl)
 
-Terminal:
+Terminal: `k1`
 
-- `k1`
-- Type `Left Punch`
-- Type `Initial Position`
-
-Press `Tab` for completion suggestions
+- Type `Volume 100` to change volume
+- Type `Left Punch` to punch left
+- Type `Left Arm +30%` to move
+  - `number`: absolute value based movement
+  - `+/-`: relative value based movement
+  - `%`: percentage based movement (0-100%)
+- Press `Tab` for completion suggestions
 
 #### Control
 
-Terminal:
-
-- `k1 control` or `npm run control`
+Terminal: `k1 control`
 
 - **Controller:**
   - Press button `L` for `Left Punch`
@@ -52,43 +60,38 @@ Terminal:
 
 Details see `controller`, `keyboard` and `control` section in [K1/robot.json](src/K1/robot.json).
 
-#### Repl
-
-Terminal:
-
-- `k1` or `k1 repl` or `npm run repl`
-- Type `Volume 100` to change volume
-- Type `Left Punch` to punch left
-- Type `Left Arm +30%` to move
-  - `number`: absolute value based movement
-  - `+/-`: relative value based movement
-  - `%`: percentage based movement (0-100%)
-- Press `Tab` for completion suggestions
-
 #### Prompt
 
 Prerequisites:
 
 - Setup [.env](.env) specifying `OPENAI_API_KEY`
 
-Terminal:
+Terminal: `k1 prompt`
 
-- `k1 prompt` or `npm run prompt`
 - Type your command in natural language.
-  - E.g., enter: `Walk forward and punch left`
+- E.g., enter: `Walk forward and punch left`
+
+Terminal: `k1 prompt joint`
+
+- Type your moves in natural language.
+- E.g., enter: `Wave your right hand and shake your head`
 
 #### Voice
 
 Prerequisites:
 
-- Install [dependencies](https://www.npmjs.com/package/node-record-lpcm16#dependencies)
+- Install additional [dependencies](https://www.npmjs.com/package/node-record-lpcm16#dependencies)
 - Setup [.env](.env) specifying `OPENAI_API_KEY`
 
-Terminal:
+Terminal: `k1 voice`
 
-- `k1 voice` or `npm run voice`
 - Speak your command in natural language.
-  - E.g., say: `Walk forward and punch left`
+- E.g., say: `Walk forward and punch left`
+
+Terminal: `k1 voice joint`
+
+- Speak your moves in natural language.
+- E.g., say: `Wave your right hand and shake your head`
 
 #### Programming
 
@@ -102,10 +105,33 @@ await k1.moveForward();
 await k1.leftPunch();
 await k1.headLeft();
 await k1.leftHand("+40%", 30);
+
+await k1.record("test"); // start recording
+await k1.unlockHead();
+// move head manually
+await k1.sync();
+await k1.save("change"); // save recording
 await k1.audio("AppSysMS/101");
 await k1.wait(3000);
+
 await k1.end();
 ```
+
+#### Recording
+
+Terminal: `k1`
+
+- `record test`
+- `unlock head`
+- Move head manually to right
+- `sync`
+- Move head manually to left
+- `sync`
+- `save change`
+- Recorded file is located at `recordings/K1/test.json`
+- `run test`
+
+Terminal: `k1 run test`
 
 #### Specification
 

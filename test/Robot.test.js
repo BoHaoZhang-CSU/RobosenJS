@@ -497,7 +497,7 @@ describe("Robot", () => {
     expect(k1.busy()).toBe(true);
     const result = await promise;
     expect(moveCall).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(k1.jointsInitial);
+    expect(result).toEqual(k1.jointInitial);
     const [[buffer]] = noble.peripheral.characteristic.writeAsync.mock.calls;
     const packet = k1.parsePacket(buffer);
     expect(packet.type).toBe(k1.config.type.jointMove.code);
@@ -514,7 +514,7 @@ describe("Robot", () => {
     const result = await promise;
     expect(moveCall).toHaveBeenCalledTimes(1);
     expect(result).toEqual({
-      ...k1.jointsInitial,
+      ...k1.jointInitial,
       head: 100,
     });
     const [[buffer]] = noble.peripheral.characteristic.writeAsync.mock.calls;
@@ -680,7 +680,7 @@ describe("Robot", () => {
     const result = await promise;
     expect(moveCall).toHaveBeenCalledTimes(1);
     expect(result).toEqual({
-      ...k1.jointsInitial,
+      ...k1.jointInitial,
       leftThigh: 50,
       leftCalf: 70,
       leftAnkle: 86,
@@ -711,7 +711,7 @@ describe("Robot", () => {
     const result = await promise;
     expect(moveCall).toHaveBeenCalledTimes(1);
     expect(result).toEqual({
-      ...k1.jointsInitial,
+      ...k1.jointInitial,
       leftThigh: 139,
       leftCalf: 60,
       leftAnkle: 96,
@@ -803,7 +803,7 @@ describe("Robot", () => {
     const result = await promise;
     expect(moveCall).toHaveBeenCalledTimes(1);
     expect(result).toEqual({
-      ...k1.jointsInitial,
+      ...k1.jointInitial,
       head: 122,
     });
     const [[buffer]] = noble.peripheral.characteristic.writeAsync.mock.calls;
@@ -822,7 +822,7 @@ describe("Robot", () => {
     const result = await promise;
     expect(moveCall).toHaveBeenCalledTimes(1);
     expect(result).toEqual({
-      ...k1.jointsInitial,
+      ...k1.jointInitial,
       head: 42,
     });
     const [[buffer]] = noble.peripheral.characteristic.writeAsync.mock.calls;
@@ -841,7 +841,7 @@ describe("Robot", () => {
     const result = await promise;
     expect(moveCall).toHaveBeenCalledTimes(1);
     expect(result).toEqual({
-      ...k1.jointsInitial,
+      ...k1.jointInitial,
       head: 202,
     });
     const [[buffer]] = noble.peripheral.characteristic.writeAsync.mock.calls;
@@ -986,7 +986,7 @@ describe("Robot", () => {
     const result = await promise;
     expect(lockCall).toHaveBeenCalledTimes(1);
     expect(result).toEqual({
-      ...k1.locksInitial,
+      ...k1.lockInitial,
       head: 0,
     });
     const [[buffer]] = noble.peripheral.characteristic.writeAsync.mock.calls;

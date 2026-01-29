@@ -8,11 +8,18 @@
   },
   "scripts": {
     "k1": "k1",
+    "k1:repl": "k1 repl",
+    "k1:control": "k1 control",
+    "k1:run": "k1 run test",
+    "k1:prompt": "k1 prompt",
+    "k1:prompt:joint": "k1 prompt joint",
+    "k1:voice": "k1 voice",
+    "k1:voice:joint": "k1 voice joint",
     "test": "jest .",
     "start": "node scripts/main",
+    "demo": "node scripts/demo",
     "control": "node scripts/control",
     "main": "node scripts/main",
-    "program": "node scripts/program",
     "prompt": "node scripts/prompt",
     "repl": "node scripts/repl",
     "voice": "node scripts/voice",
@@ -34,7 +41,7 @@
     "@abandonware/noble": "^1.9.2-26",
     "node-hid": "^3.2.0",
     "node-record-lpcm16": "^1.0.1",
-    "openai": "^6.16.0"
+    "openai": "^6.17.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -42,7 +49,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.12.1",
     "eslint-plugin-n": "^17.23.2",
-    "globals": "^17.1.0",
+    "globals": "^17.2.0",
     "jest": "^30.2.0",
     "prettier": "^3.8.1"
   },

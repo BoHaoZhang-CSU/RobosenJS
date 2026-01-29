@@ -1,0 +1,41 @@
+[
+  {
+    "leftThigh": 129,
+    "leftCalf": 60,
+    "leftAnkle": 106,
+    "rightThigh": 118,
+    "rightCalf": 190,
+    "rightAnkle": 146,
+    "leftShoulder": 212,
+    "rightShoulder": 36,
+    "leftHip": 123,
+    "leftFoot": 123,
+    "rightHip": 129,
+    "rightFoot": 115,
+    "leftArm": 223,
+    "leftHand": 116,
+    "rightArm": 34,
+    "rightHand": 126,
+    "head": 122,
+    "value17": 125,
+    "value18": 125,
+    "value19": 125,
+    "value20": 100,
+    "value21": 100,
+    "value22": 125,
+    "value23": 125,
+    "speed": 30
+  },
+  {
+    "head": "-76",
+    "speed": 30
+  },
+  {
+    "head": "+145",
+    "speed": 30
+  },
+  {
+    "head": "-74",
+    "speed": 30
+  }
+]

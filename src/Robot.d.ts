@@ -68,6 +68,17 @@ type PacketType =
     | "ff" // Failure
     ;
 
+type PromptScope =
+    | "command"
+    | "joint"
+    ;
+
+type SaveMode =
+    | "full"
+    | "delta"
+    | "change"
+    ;
+
 interface Command {
     type: string;
     data?: string | number | boolean | Buffer;
@@ -90,11 +101,17 @@ interface Receive<Packet> {
     kind?: PacketKind,
     type: PacketType,
     collectType?: PacketType,
-    result?: Packet[]
+    collection?: Packet[],
+    count?: number
 }
 
 interface RobotOptions {
     [key: string]: any;
+}
+
+
+interface Wait {
+    wait: number
 }
 
 export class Robot<Packet, State, Joint> {
@@ -141,6 +158,8 @@ export class Robot<Packet, State, Joint> {
 
     headRight(speed?: number, norm?: boolean): Promise<Joint>;
 
+    runMoves(moves: [Joint | Wait]): Promise<Joint>;
+
     lockJoint(name: string): Promise<Joint>;
 
     lockJoints(joints: Joint): Promise<Joint>;
@@ -152,6 +171,24 @@ export class Robot<Packet, State, Joint> {
     unlockJoints(joints: Joint): Promise<Joint>;
 
     unlockAllJoints(): Promise<Joint>;
+
+    syncJoints(): Promise<Joint>;
+
+    program(): Promise<Joint>;
+
+    programExit(): Promise<void>;
+
+    record(file: String): Promise<void>;
+
+    sync(): Promise<Joint>;
+
+    pause(): Promise<void>;
+
+    save(mode?: SaveMode): Promise<void>;
+
+    cancel(): Promise<void>;
+
+    run(file: String): Promise<Joint>;
 
     kind(): Promise<string>;
 
@@ -247,17 +284,21 @@ export class Robot<Packet, State, Joint> {
 
     repl(): Promise<void>;
 
-    voice(signal?: AbortSignal): Promise<void>;
+    voice(signal?: AbortSignal, scope?: PromptScope): Promise<void>;
 
-    voiceRepl(): Promise<void>;
+    voiceRepl(scope?: PromptScope): Promise<void>;
 
-    prompt(prompt: string): Promise<void>;
+    commandPrompt(prompt: string): Promise<void>;
 
-    promptRepl(): Promise<void>;
+    jointPrompt(prompt: string): Promise<void>;
+
+    prompt(prompt: string, scope?: PromptScope): Promise<void>;
+
+    promptRepl(scope?: PromptScope): Promise<void>;
 
     control(signal?: AbortSignal): Promise<void>;
 
-    wait(milliseconds: number): Promise<void>;
+    wait(milliseconds: number): Promise<void | undefined>;
 
     log(...args: any[]): void;
 
@@ -302,7 +343,7 @@ export interface SpecConfig {
 export interface LogConfig {
     active?: boolean;
     traffic?: boolean;
-    level?: "verbose" | "info" | "warn" | "error";
+    level?: "verbose" | "info" | "warning" | "error";
     prompt?: string;
     indent?: string;
     mark?: string;
@@ -348,6 +389,7 @@ export interface JointConfig {
     min: number;
     max: number;
     body?: string;
+    joint?: string;
     norm?: boolean;
 }
 
@@ -355,6 +397,7 @@ export interface CommandCommon {
     kind?: number | string;
     type?: string;
     description?: string;
+    id?: string;
     func?: string;
     data?: string | number | boolean;
     min?: number;
@@ -372,6 +415,7 @@ export interface CommandCommon {
     stop?: boolean;
     block?: boolean;
     check?: boolean;
+    folder?: string
     example?: string;
 }
 
@@ -448,8 +492,14 @@ export interface AxisBinding {
     direction: "x" | "y";
 }
 
+type AxisValue = -1 | 0 | 1;
+
+export type StickKey =
+    | `x=${AxisValue},y=${AxisValue}`
+    | `y=${AxisValue},x=${AxisValue}`;
+
 export type StickMapping = Record<
-    `${"x" | "y"}=${-1 | 0 | 1},${"y"}=${-1 | 0 | 1}`,
+    StickKey,
     {
         move?: string;
         stop?: boolean;
@@ -464,6 +514,7 @@ export interface KeyboardConfig {
             move?: string;
             stop?: boolean;
             body?: string | null;
+            joint?: string | null;
         }
     >;
 }

@@ -1,11 +1,11 @@
 "use strict";
 
 const { K1 } = require("../");
-const demo = require("../scripts/demo");
+const program = require("../scripts/program");
 
 (async function main() {
   const k1 = new K1();
   await k1.on();
-  await demo.main(k1);
+  await program.main(k1);
   await k1.end();
 })();
