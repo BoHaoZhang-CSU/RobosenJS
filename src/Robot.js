@@ -11,7 +11,10 @@ const hid = require("node-hid");
 const noble = require("@abandonware/noble");
 const recorder = require("node-record-lpcm16");
 
-process.loadEnvFile(".env");
+const envPath = path.join(process.cwd(), ".env");
+if (fs.existsSync(envPath)) {
+  process.loadEnvFile(envPath);
+}
 
 const CONFIG_FILE = "robot";
 

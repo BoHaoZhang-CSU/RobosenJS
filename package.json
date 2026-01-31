@@ -1,7 +1,7 @@
 {
   "name": "robosen-js",
-  "version": "0.9.0",
-  "description": "Robosen",
+  "version": "0.9.1",
+  "description": "RobosenJS is a Node.js library to control Robosen robots.",
   "main": "index.js",
   "bin": {
     "k1": "bin/k1.js"
@@ -32,14 +32,15 @@
     "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --log-level error",
     "prettier:ci": "prettier \"**/*.{js,json,md,yml,yaml}\" --check"
   },
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oklemenz/Robosen.git"
+    "url": "git+https://github.com/oklemenz/RobosenJS.git"
   },
   "bugs": {
-    "url": "https://github.com/oklemenz/Robosen/issues"
+    "url": "https://github.com/oklemenz/RobosenJS/issues"
   },
-  "homepage": "https://github.com/oklemenz/Robosen#readme",
+  "homepage": "https://github.com/oklemenz/RobosenJS#readme",
   "engines": {
     "node": ">=24"
   },
@@ -58,6 +59,5 @@
     "globals": "^17.2.0",
     "jest": "^30.2.0",
     "prettier": "^3.8.1"
-  },
-  "license": "Apache-2.0"
+  }
 }
