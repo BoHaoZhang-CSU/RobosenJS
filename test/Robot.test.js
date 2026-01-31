@@ -1,5 +1,6 @@
 "use strict";
 
+const fs = require("fs");
 const noble = require("@abandonware/noble");
 
 const { Robot, K1 } = require("../");
@@ -21,6 +22,7 @@ describe("Robot", () => {
   });
 
   beforeEach(async () => {
+    jest.restoreAllMocks();
     k1 = await noble.test(new K1());
   });
 
@@ -272,6 +274,17 @@ describe("Robot", () => {
     expect(k1.ready()).toBe(true);
   });
 
+  test("Handshake", async () => {
+    const call = noble.mock(async () => {
+      noble.notify(k1.config.type.handshake, "", 5);
+    });
+    const promise = k1.handshake();
+    expect(k1.busy()).toBe(false);
+    await promise;
+    expect(call).toHaveBeenCalledTimes(1);
+    expect(k1.ready()).toBe(true);
+  });
+
   test("Stop", async () => {
     let commandCall;
     const performingPromise = new Promise((resolve) => {
@@ -293,6 +306,17 @@ describe("Robot", () => {
     expect(k1.ready()).toBe(true);
     expect(k1.busy()).toBe(false);
     expect(actionPromise).toBeDefined();
+  });
+
+  test("Shutdown", async () => {
+    const call = noble.mock(async () => {
+      noble.notify(k1.config.type.shutdown, "", 5);
+    });
+    const promise = k1.shutdown();
+    expect(k1.busy()).toBe(false);
+    await promise;
+    expect(call).toHaveBeenCalledTimes(1);
+    expect(k1.ready()).toBe(false);
   });
 
   test("Move (forward)", async () => {
@@ -1080,5 +1104,128 @@ describe("Robot", () => {
     expect(packet.type).toBe(k1.config.type.jointUnlockAll.code);
     expect(packet.raw.toString("hex")).toBe("ffff02eaec");
     expect(k1.ready()).toBe(true);
+  });
+
+  test("Sync Joints", async () => {
+    const jointState = { ...k1.jointInitial, head: 100 };
+    const call = noble.mock(async () => {
+      noble.notify(k1.config.type.jointSync, jointState, 5);
+    });
+    const promise = k1.syncJoints();
+    expect(k1.busy()).toBe(false);
+    const result = await promise;
+    expect(call).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(jointState);
+    expect(k1.jointCurrent).toEqual(jointState);
+    expect(k1.ready()).toBe(true);
+  });
+
+  test("Run Moves", async () => {
+    const moves = [{ head: 130 }, { wait: 10 }, { head: 140 }];
+    noble.mock(async () => {
+      noble.notify(k1.config.type.jointLockAll, "", 5);
+    });
+    noble.mock(async () => {
+      noble.notify(k1.config.type.jointMove, "", 10);
+    });
+    const call = noble.mock(async () => {
+      noble.notify(k1.config.type.jointMove, "", 15);
+    });
+    const promise = k1.runMoves(moves);
+    expect(k1.busy()).toBe(false);
+    const result = await promise;
+    expect(call).toHaveBeenCalledTimes(3);
+    expect(result.head).toBeDefined();
+    expect(result.head).toBe(140);
+    expect(k1.ready()).toBe(true);
+  });
+
+  test("Program", async () => {
+    const jointState = k1.jointInitial;
+    const call = noble.mock(async () => {
+      noble.notify(k1.config.type.program, jointState, 5);
+      noble.notify(k1.config.type.program, k1.config.type.program, 10);
+    });
+    const promise = k1.program();
+    expect(k1.busy()).toBe(false);
+    const result = await promise;
+    expect(call).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(jointState);
+    expect(k1.jointCurrent).toEqual(jointState);
+    expect(k1.ready()).toBe(true);
+  });
+
+  test("Program Exit", async () => {
+    const call = noble.mock(async () => {
+      noble.notify(k1.config.type.programExit, "", 5);
+    });
+    const promise = k1.programExit();
+    expect(k1.busy()).toBe(false);
+    await promise;
+    expect(call).toHaveBeenCalledTimes(1);
+    expect(k1.ready()).toBe(true);
+  });
+
+  test("Record", async () => {
+    jest.spyOn(fs, "existsSync").mockReturnValue(false);
+    await k1.record("testRun");
+    expect(k1.jointsRecord).toBeDefined();
+    expect(k1.jointsRecord.length).toBe(1);
+    expect(k1.jointsRecord[0]).toHaveProperty("speed");
+    expect(k1.jointsRecordFile).toContain("testRun.json");
+  });
+
+  test("Sync recording", async () => {
+    jest.spyOn(fs, "existsSync").mockReturnValue(false);
+    await k1.record("syncTest");
+    const syncCall = noble.mock(async () => {
+      noble.notify(k1.config.type.jointSync, { head: 120 }, 5);
+    });
+    const joints = await k1.sync();
+    expect(syncCall).toHaveBeenCalledTimes(1);
+    expect(joints.head).toBe(120);
+    expect(k1.jointsRecord.length).toBe(2);
+  });
+
+  test("Pause recording", async () => {
+    jest.spyOn(fs, "existsSync").mockReturnValue(false);
+    await k1.record("pauseTest");
+    await k1.pause(1500);
+    const last = k1.jointsRecord.at(-1);
+    expect(last).toEqual({ wait: 1500 });
+  });
+
+  test("Save recording", async () => {
+    jest.spyOn(fs, "existsSync").mockReturnValue(false);
+    jest.spyOn(fs, "mkdirSync").mockImplementation(() => {});
+    const writeSpy = jest.spyOn(fs, "writeFileSync").mockImplementation(() => {});
+    await k1.record("saveTest");
+    noble.mock(async () => {
+      noble.notify(k1.config.type.jointSync, { head: 120 }, 5);
+    });
+    await k1.sync();
+    await k1.pause(500);
+    await k1.save("change");
+    expect(writeSpy).toHaveBeenCalledTimes(1);
+    expect(k1.jointsRecord).toBeNull();
+    expect(k1.jointsRecordFile).toBeNull();
+  });
+
+  test("Cancel recording", async () => {
+    jest.spyOn(fs, "existsSync").mockReturnValue(false);
+    await k1.record("cancelTest");
+    await k1.cancel();
+    expect(k1.jointsRecord).toBeNull();
+    expect(k1.jointsRecordFile).toBeNull();
+  });
+
+  test("Run recorded moves", async () => {
+    const moves = [{ head: 120 }, { wait: 500 }];
+    jest.spyOn(fs, "existsSync").mockReturnValue(true);
+    jest.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(moves));
+    const runMovesSpy = jest.spyOn(k1, "runMoves").mockResolvedValue({ head: 120 });
+    const result = await k1.run("runTest");
+    expect(runMovesSpy).toHaveBeenCalledWith(moves);
+    expect(result.head).toBe(120);
   });
 });

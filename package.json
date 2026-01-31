@@ -1,11 +1,15 @@
 {
   "name": "robosen-js",
-  "version": "1.0.0",
+  "version": "0.9.0",
   "description": "Robosen",
   "main": "index.js",
   "bin": {
     "k1": "bin/k1.js"
   },
+  "files": [
+    "bin",
+    "src"
+  ],
   "scripts": {
     "k1": "k1",
     "k1:repl": "k1 repl",
@@ -24,7 +28,9 @@
     "repl": "node scripts/repl",
     "voice": "node scripts/voice",
     "lint": "npm run prettier && eslint . --fix",
-    "prettier": "prettier \"**/*.{js,json,md,html}\" --write --log-level error"
+    "lint:ci": "eslint . && npm run prettier:ci",
+    "prettier": "prettier \"**/*.{js,json,md,yml,yaml}\" --write --log-level error",
+    "prettier:ci": "prettier \"**/*.{js,json,md,yml,yaml}\" --check"
   },
   "repository": {
     "type": "git",
