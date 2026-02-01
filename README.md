@@ -105,15 +105,8 @@ await k1.moveForward();
 await k1.leftPunch();
 await k1.headLeft();
 await k1.leftHand("+40%", 30);
-
-await k1.record("test"); // start recording
-await k1.unlockHead();
-// move head manually
-await k1.sync();
-await k1.save("change"); // save recording
 await k1.audio("AppSysMS/101");
 await k1.wait(3000);
-
 await k1.end();
 ```
 
@@ -121,17 +114,17 @@ await k1.end();
 
 Terminal: `k1`
 
-- `record test`
+- `record <file>`
 - `unlock head`
 - Move head manually to right
 - `sync`
 - Move head manually to left
 - `sync`
 - `save change`
-- Recorded file is located at `recordings/K1/test.json`
-- `run test`
+- Recorded file is located at `recordings/K1/<file>>.json`
+- `run <file>`
 
-Terminal: `k1 run test`
+Terminal: `k1 run <file>`
 
 #### Specification
 
