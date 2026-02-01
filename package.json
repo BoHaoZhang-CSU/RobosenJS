@@ -6,6 +6,7 @@
   "bin": {
     "k1": "bin/k1.js"
   },
+  "types": "index.d.ts",
   "files": [
     "bin",
     "src"

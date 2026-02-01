@@ -17,6 +17,15 @@
   - Install module: `npm install robosen-js`
   - See [Programming](#programming) section
 
+#### Features
+
+- REPL for direct command execution
+- Control robot via keyboard or game controller
+- Perform sequence of commands via natural language prompt or voice
+- Perform sequence of joint moves via natural language prompt or voice
+- Record and playback sequences of joint movements
+- Program using Node.js robot API with JavaScript or TypeScript
+
 #### Command-Line Interface (CLI)
 
 - Install globally: `npm install -g robosen-js`
