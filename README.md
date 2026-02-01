@@ -5,19 +5,23 @@
 #### Getting Started
 
 - Install [Node.js](https://nodejs.org/en/download)
-- Check project:
+- Check-out project:
   - Checkout: `git clone https://github.com/oklemenz/RobosenJS.git`
-  - Checkout: `npm install`
+  - Install: `npm install`
   - Test: `npm test`
   - Run: `npm start`
-- Test package:
-  - Install module globally: `npm install -g robosen-js`
-  - See sections below
-- Use package:
+- Use CLI:
+  - Install globally: `npm install -g robosen-js`
+  - See [Command-Line Interface (CLI)](#command-line-interface-cli) section
+- Use Node.js module:
   - Install module: `npm install robosen-js`
-  - See programming section below
+  - See [Programming](#programming) section
 
-#### CLI (repl)
+#### Command-Line Interface (CLI)
+
+- Install globally: `npm install -g robosen-js`
+
+##### REPL
 
 Terminal: `k1`
 
@@ -29,7 +33,7 @@ Terminal: `k1`
   - `%`: percentage based movement (0-100%)
 - Press `Tab` for completion suggestions
 
-#### Control
+##### Control
 
 Terminal: `k1 control`
 
@@ -60,7 +64,7 @@ Terminal: `k1 control`
 
 Details see `controller`, `keyboard` and `control` section in [K1/robot.json](src/K1/robot.json).
 
-#### Prompt
+##### Prompt
 
 Prerequisites:
 
@@ -76,7 +80,7 @@ Terminal: `k1 prompt joint`
 - Type your moves in natural language.
 - E.g., enter: `Wave your right hand and shake your head`
 
-#### Voice
+##### Voice
 
 Prerequisites:
 
@@ -93,7 +97,25 @@ Terminal: `k1 voice joint`
 - Speak your moves in natural language.
 - E.g., say: `Wave your right hand and shake your head`
 
+##### Recording
+
+Terminal: `k1`
+
+- `record <file>`
+- `unlock head`
+- Move head manually to right
+- `sync`
+- Move head manually to left
+- `sync`
+- `save change`
+- Recorded file is located at `recordings/K1/<file>>.json`
+- `run <file>`
+
+Terminal: `k1 run <file>`
+
 #### Programming
+
+- Install module: `npm install robosen-js`
 
 ```js
 const { K1 } = require("robosen-js");
@@ -109,22 +131,6 @@ await k1.audio("AppSysMS/101");
 await k1.wait(3000);
 await k1.end();
 ```
-
-#### Recording
-
-Terminal: `k1`
-
-- `record <file>`
-- `unlock head`
-- Move head manually to right
-- `sync`
-- Move head manually to left
-- `sync`
-- `save change`
-- Recorded file is located at `recordings/K1/<file>>.json`
-- `run <file>`
-
-Terminal: `k1 run <file>`
 
 #### Specification
 
