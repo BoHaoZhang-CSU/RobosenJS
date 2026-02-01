@@ -10,6 +10,7 @@
   - Install: `npm install`
   - Test: `npm test`
   - Run: `npm start`
+  - Demo: `npm run demo`
 - Use CLI:
   - Install globally: `npm install -g robosen-js`
   - See [Command-Line Interface (CLI)](#command-line-interface-cli) section
@@ -30,16 +31,18 @@
 
 - Install globally: `npm install -g robosen-js`
 
-##### REPL
+##### Read-Eval-Print-Loop (REPL)
 
 Terminal: `k1`
 
 - Type `Volume 100` to change volume
 - Type `Left Punch` to punch left
-- Type `Left Arm +30%` to move
+- Type `Left Arm -30%` to move
   - `number`: absolute value based movement
   - `+/-`: relative value based movement
   - `%`: percentage based movement (0-100%)
+- Type `Boogaloo` to perform dance action
+  - Press any key to stop activity 
 - Press `Tab` for completion suggestions
 
 ##### Control

@@ -1557,7 +1557,17 @@ module.exports = class Robot {
 
   async commandPrompt(prompt) {
     const llm = this.#llm();
-    const commands = Object.values(this.actions());
+    const commands = Object.values(this.commands(undefined, [
+        this.config.type.action,
+        this.config.type.moveNorth,
+        this.config.type.moveNorthEast,
+        this.config.type.moveEast,
+        this.config.type.moveSouthEast,
+        this.config.type.moveSouth,
+        this.config.type.moveSouthWest,
+        this.config.type.moveWest,
+        this.config.type.moveNorthWest,
+    ]));
     const systemPrompt = llm.command.systemPrompt;
     const userPrompt = llm.command.userPrompt
       .replace("{{prompt}}", prompt)
@@ -1581,7 +1591,7 @@ module.exports = class Robot {
     if (selectedCommands.length) {
       this.logInfo("Matching commands:", selectedCommands.map((command) => command.name).join(", "), "...");
       for (const command of selectedCommands) {
-        await this.action(command.name, undefined, undefined, true);
+        await this.command(command.name, undefined, undefined, true);
       }
     } else {
       this.logWarning("No matching commands!");
@@ -1624,9 +1634,11 @@ module.exports = class Robot {
   async prompt(prompt, scope = PROMPT_SCOPE.command) {
     switch (scope) {
       case PROMPT_SCOPE.command:
+      case "c":
       default:
         return await this.commandPrompt(prompt);
       case PROMPT_SCOPE.joint:
+      case "j":
         return await this.jointPrompt(prompt);
     }
   }
