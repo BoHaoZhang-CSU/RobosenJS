@@ -1557,7 +1557,8 @@ module.exports = class Robot {
 
   async commandPrompt(prompt) {
     const llm = this.#llm();
-    const commands = Object.values(this.commands(undefined, [
+    const commands = Object.values(
+      this.commands(undefined, [
         this.config.type.action,
         this.config.type.moveNorth,
         this.config.type.moveNorthEast,
@@ -1567,7 +1568,8 @@ module.exports = class Robot {
         this.config.type.moveSouthWest,
         this.config.type.moveWest,
         this.config.type.moveNorthWest,
-    ]));
+      ]),
+    );
     const systemPrompt = llm.command.systemPrompt;
     const userPrompt = llm.command.userPrompt
       .replace("{{prompt}}", prompt)

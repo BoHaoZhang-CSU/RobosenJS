@@ -42,7 +42,7 @@ Terminal: `k1`
   - `+/-`: relative value based movement
   - `%`: percentage based movement (0-100%)
 - Type `Boogaloo` to perform dance action
-  - Press any key to stop activity 
+  - Press any key to stop activity
 - Press `Tab` for completion suggestions
 
 ##### Control
