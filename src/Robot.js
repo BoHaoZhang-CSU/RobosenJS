@@ -5,7 +5,6 @@ const path = require("path");
 const repl = require("repl");
 const { Readable } = require("stream");
 const readline = require("readline");
-const readlinePromise = require("readline/promises");
 
 const hid = require("node-hid");
 const noble = require("@abandonware/noble");
@@ -1517,9 +1516,25 @@ module.exports = class Robot {
         process.stdin.once("data", onData);
       });
 
+    const enterPressed = (query) =>
+      new Promise((resolve) => {
+        const rl = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+        rl.question(query, () => {
+          rl.close();
+          resolve(true);
+        });
+        // Ctrl+C
+        rl.on("SIGINT", () => {
+          rl.close();
+          resolve(false);
+        });
+      });
+
     while (true) {
       const controller = new AbortController();
-
       try {
         await Promise.race([
           keyPressed().then(async () => {
@@ -1533,19 +1548,9 @@ module.exports = class Robot {
         process.stdin.setRawMode(false);
         process.stdin.pause();
       }
-
-      const rl = readlinePromise.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
-
-      try {
-        await rl.question(`${this.name}> Press Enter to talk ...`);
-      } catch {
-        // Ctrl+C
+      const ok = await enterPressed(`${this.name}> Press Enter to talk ...`);
+      if (!ok) {
         return;
-      } finally {
-        rl.close();
       }
     }
   }
@@ -1859,7 +1864,10 @@ module.exports = class Robot {
             const currentControllerState = controllerState.current[stickName];
             const previousControllerState = controllerState.previous[stickName];
             if (stick[currentControllerState._] !== stick[previousControllerState?._]) {
-              this.#trigger(stick[currentControllerState._], { key: stickName, value: currentControllerState });
+              this.#trigger(stick[currentControllerState._], {
+                key: stickName,
+                value: currentControllerState,
+              });
               break;
             }
           }

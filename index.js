@@ -7,3 +7,4 @@ module.exports = {
   K1,
   Robot,
 };
+module.exports.default = module.exports;

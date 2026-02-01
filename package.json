@@ -2,15 +2,24 @@
   "name": "robosen-js",
   "version": "0.9.1",
   "description": "RobosenJS is a Node.js library to control Robosen robots.",
-  "main": "index.js",
+  "main": "./index.js",
   "bin": {
-    "k1": "bin/k1.js"
+    "k1": "./bin/k1.js"
   },
-  "types": "index.d.ts",
+  "types": "./index.d.ts",
   "files": [
     "bin",
-    "src"
+    "src",
+    "index.js",
+    "index.d.ts"
   ],
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    }
+  },
   "scripts": {
     "k1": "k1",
     "k1:repl": "k1 repl",
@@ -43,7 +52,7 @@
   },
   "homepage": "https://github.com/oklemenz/RobosenJS#readme",
   "engines": {
-    "node": ">=24"
+    "node": ">=22"
   },
   "dependencies": {
     "@abandonware/noble": "^1.9.2-26",
