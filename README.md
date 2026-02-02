@@ -128,9 +128,19 @@ Terminal: `k1 run <file>`
 #### Programming
 
 - Install module: `npm install robosen-js`
+- Use module:
+  - ESM:
+    ```js
+    import { K1 } from "robosen-js";
+    ```
+  - CJS:
+    ```js
+    const { K1 } = require("robosen-js");
+    ```
+- Example usage:
 
 ```js
-const { K1 } = require("robosen-js");
+import { K1 } from "robosen-js";
 const k1 = new K1();
 await k1.on();
 await k1.volume(100);
