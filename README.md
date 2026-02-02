@@ -120,7 +120,7 @@ Terminal: `k1`
 - Move head manually to left
 - `sync`
 - `save change`
-- Recorded file is located at `recordings/K1/<file>>.json`
+- Recorded file is located at `recordings/K1/<file>.json`
 - `run <file>`
 
 Terminal: `k1 run <file>`
