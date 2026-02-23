@@ -613,7 +613,7 @@ module.exports = class Robot {
       this.logWarning("Recording already active for file:", this.jointsRecordFile);
       return;
     }
-    file ??= "run/test";
+    file ??= "demo";
     const fileName = file + (!file.endsWith(".json") ? ".json" : "");
     const filePath = path.join(process.cwd(), this.config.command.System.Record.folder, this.code, fileName);
     try {
@@ -699,6 +699,9 @@ module.exports = class Robot {
 
   async run(file) {
     if (!this.#checkConnected()) {
+      return;
+    }
+    if (!file) {
       return;
     }
     const fileName = file + (!file.endsWith(".json") ? ".json" : "");
