@@ -1,10 +1,10 @@
 {
   "name": "robosen-js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "RobosenJS is a Node.js library to control Robosen robots.",
   "main": "./index.js",
   "bin": {
-    "k1": "./bin/k1.js"
+    "k1": "bin/k1.js"
   },
   "types": "./index.d.ts",
   "files": [
