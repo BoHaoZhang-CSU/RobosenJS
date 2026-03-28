@@ -154,6 +154,38 @@ await k1.wait(3000);
 await k1.end();
 ```
 
+
+#### Python SDK (new)
+
+This repository now includes a Python port under `robosen_py/` and `scripts_py/`, designed for secondary development with a top-level Python API.
+
+- Install dependencies:
+  - `python -m venv .venv && source .venv/bin/activate`
+  - `pip install -e .`
+- Quick start:
+  - `python scripts_py/demo.py`
+- REPL:
+  - `python scripts_py/repl.py`
+
+Python API example:
+
+```python
+import asyncio
+from robosen_py import K1
+
+async def main():
+    k1 = K1()
+    await k1.on()
+    await k1.volume(100)
+    await k1.move_forward(1500)
+    await k1.left_punch()
+    await k1.end()
+
+asyncio.run(main())
+```
+
+Implemented Python parity includes: packet encode/decode, BLE transport, dynamic command mapping from `robot.json`, moves/actions/joints/locks, recording+playback files, prompt/joint-prompt via OpenAI responses API, and script entry points for demo/repl.
+
 #### Specification
 
 K1 specification and all commands can be found at [K1/robot.json](src/K1/robot.json).
